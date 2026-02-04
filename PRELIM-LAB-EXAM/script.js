@@ -1008,12 +1008,11 @@ ID,FIRST,LAST,LAB1,LAB2,LAB3,PRELIM,ATTEND
 
 `;
 
-// ====== PARSE CSV INTO ARRAY OF OBJECTS ======
+// ====== PARSE CSV ======
 function parseCSV(csv) {
   const lines = csv.trim().split("\n");
   const headers = lines[0].split(",");
-  const rows = lines.slice(1);
-  return rows.map(line => {
+  return lines.slice(1).map(line => {
     const values = line.split(",");
     const obj = {};
     headers.forEach((h, i) => obj[h.trim()] = values[i].trim());
@@ -1099,7 +1098,7 @@ function basicComplete() {
 }
 
 function showBasicError() {
-  alert("Please complete filling out Student ID, First Name, and Last Name.");
+  alert("⚠️ Please complete filling out Student ID, First Name, and Last Name.");
 }
 
 function gradeIncomplete() {
@@ -1109,7 +1108,7 @@ function gradeIncomplete() {
 // ====== CRUD FUNCTIONS ======
 function saveData() {
   if (gradeIncomplete()) {
-    alert("Please fill in all grade fields.");
+    alert("⚠️ Please fill in all grade fields.");
     return;
   }
 
@@ -1126,10 +1125,10 @@ function saveData() {
 
   if (isUpdateMode && selectedRow !== null) {
     students[selectedRow] = record;
-    alert("Updated successfully!");
+    alert("✅ Record updated successfully!");
   } else {
     students.unshift(record);
-    alert("Added successfully!");
+    alert("✅ Record added successfully!");
   }
 
   refreshTable();
@@ -1149,21 +1148,25 @@ function viewStudent() {
   );
 
   tableBody.innerHTML = "";
-  filtered.forEach((s, i) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${s.ID}</td>
-      <td>${s.FIRST}</td>
-      <td>${s.LAST}</td>
-      <td>${s.LAB1}</td>
-      <td>${s.LAB2}</td>
-      <td>${s.LAB3}</td>
-      <td>${s.PRELIM}</td>
-      <td>${s.ATTEND}</td>
-    `;
-    row.addEventListener("click", () => selectRow(i, row));
-    tableBody.appendChild(row);
-  });
+  if (filtered.length === 0) {
+    alert("⚠️ No record found for the given Student ID and Name.");
+  } else {
+    filtered.forEach((s, i) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${s.ID}</td>
+        <td>${s.FIRST}</td>
+        <td>${s.LAST}</td>
+        <td>${s.LAB1}</td>
+        <td>${s.LAB2}</td>
+        <td>${s.LAB3}</td>
+        <td>${s.PRELIM}</td>
+        <td>${s.ATTEND}</td>
+      `;
+      row.addEventListener("click", () => selectRow(i, row));
+      tableBody.appendChild(row);
+    });
+  }
 }
 
 // ====== EVENT LISTENERS ======
@@ -1186,27 +1189,34 @@ addBtn.addEventListener("click", () => {
 
 updateBtn.addEventListener("click", () => {
   if (selectedRow === null) {
-    alert("Please select a row to update.");
+    alert("⚠️ Please select a row to update first.");
     return;
   }
   const s = students[selectedRow];
+  idField.value = s.ID;
+  fnField.value = s.FIRST;
+  lnField.value = s.LAST;
   lab1.value = s.LAB1;
   lab2.value = s.LAB2;
   lab3.value = s.LAB3;
   prelim.value = s.PRELIM;
   attendance.value = s.ATTEND;
   isUpdateMode = true;
-  showGradePanel();
+  showGradePanel(); // ✅ Now correctly shows panel on update
 });
 
 deleteBtn.addEventListener("click", () => {
   if (selectedRow === null) {
-    alert("Please select a row to delete.");
+    alert("⚠️ Please select a row to delete.");
     return;
   }
-  students.splice(selectedRow, 1);
-  refreshTable();
-  alert("Deleted successfully!");
+  const confirmDel = confirm("Are you sure you want to delete this record?");
+  if (confirmDel) {
+    students.splice(selectedRow, 1);
+    refreshTable();
+    selectedRow = null;
+    alert("🗑️ Record deleted successfully!");
+  }
 });
 
 saveBtn.addEventListener("click", saveData);
