@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PrelimLabExam",
+            "request": "launch",
+            "mainClass": "PrelimLabExam",
+            "projectName": "Prog2-9338-AY225-TAYLO_64fc0583"
+        },
+        {
+            "type": "java",
             "name": "PrelimLabWork3",
             "request": "launch",
             "mainClass": "PrelimLabWork3",
