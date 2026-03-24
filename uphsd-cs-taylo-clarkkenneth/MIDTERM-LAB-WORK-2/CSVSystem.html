@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CSV System (Enhanced)</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 10px; }
+    textarea { width: 100%; height: 400px; margin-top: 10px; font-family: monospace; }
+    select, button { margin-right: 5px; margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<div>
+    <input type="file" id="fileInput" accept=".csv">
+    <select id="columnBox"></select>
+    <button id="uniqueBtn">Unique Values</button>
+    <button id="exportBtn">Export 50</button>
+    <button id="cleanBtn">Clean Data</button>
+</div>
+
+<textarea id="outputArea" readonly></textarea>
+
+<script>
+let headers = [];
+let data = [];
+
+const fileInput = document.getElementById('fileInput');
+const outputArea = document.getElementById('outputArea');
+const columnBox = document.getElementById('columnBox');
+
+// ── LOAD CSV ──────────────────────────────────
+fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+        const content = e.target.result;
+        const lines = content.split(/\r?\n/).filter(line => line.trim() !== '');
+        headers = lines[0].split(',');
+        data = lines.slice(1).map(line => line.split(','));
+
+        // Populate dropdown
+        columnBox.innerHTML = '';
+        headers.forEach((h, i) => {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = `${i} - ${h}`;
+            columnBox.appendChild(option);
+        });
+
+        // Display CSV
+        outputArea.value = headers.join(' | ') + '\n' + '-'.repeat(50) + '\n';
+        data.forEach(row => outputArea.value += row.join(' | ') + '\n');
+    };
+    reader.readAsText(file);
+});
+
+// ── UNIQUE VALUES ────────────────────────────
+document.getElementById('uniqueBtn').addEventListener('click', () => {
+    const col = parseInt(columnBox.value);
+    const uniqueSet = new Set();
+    data.forEach(row => { if (col < row.length) uniqueSet.add(row[col]); });
+    outputArea.value = 'Unique Values:\n\n' + Array.from(uniqueSet).join('\n');
+});
+
+// ── CLEAN DATA ──────────────────────────────
+document.getElementById('cleanBtn').addEventListener('click', () => {
+    const cleaned = data.filter(row => row.every(col => col.trim() !== ''));
+    outputArea.value = 'Clean Data:\n\n' + cleaned.map(row => row.join(' | ')).join('\n');
+});
+
+// ── EXPORT FIRST 50 ─────────────────────────
+document.getElementById('exportBtn').addEventListener('click', () => {
+    if (!data.length) return alert('No data to export');
+
+    const rowsToExport = [headers, ...data.slice(0, 50)];
+    const csvContent = rowsToExport.map(row => row.join(',')).join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'exported_50.csv');
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+</script>
+
+</body>
+</html>

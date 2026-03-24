@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CSVSystemGUI",
+            "request": "launch",
+            "mainClass": "CSVSystemGUI",
+            "projectName": "Prog2-9338-AY225-TAYLO_64fc0583"
+        },
+        {
+            "type": "java",
+            "name": "DeterminantSolver",
+            "request": "launch",
+            "mainClass": "DeterminantSolver",
+            "projectName": "Prog2-9338-AY225-TAYLO_64fc0583"
+        },
+        {
+            "type": "java",
+            "name": "CSVGuiProcessor",
+            "request": "launch",
+            "mainClass": "CSVGuiProcessor",
+            "projectName": "Prog2-9338-AY225-TAYLO_64fc0583"
+        },
+        {
+            "type": "java",
+            "name": "CSVProcessor",
+            "request": "launch",
+            "mainClass": "CSVProcessor",
+            "projectName": "Prog2-9338-AY225-TAYLO_64fc0583"
+        },
+        {
+            "type": "java",
             "name": "PrelimLabExam",
             "request": "launch",
             "mainClass": "PrelimLabExam",
