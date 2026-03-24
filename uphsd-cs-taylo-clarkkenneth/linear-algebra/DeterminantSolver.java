@@ -5,7 +5,7 @@
  * Assignment      : Programming Assignment 1 — 3x3 Matrix Determinant Solver
  * School          : University of Perpetual Help System DALTA, Molino Campus
  * Date            : March 2026
- * GitHub Repo     : https://github.com/your-username/uphsd-cs-taylo-clarkkenneth
+ * GitHub Repo     : https://github.com/Clarktaylo/Prog2-9338-AY225-TAYLO
  *
  * Description:
  *   This program determines the determinant of a fixed 3x3 matrix assigned

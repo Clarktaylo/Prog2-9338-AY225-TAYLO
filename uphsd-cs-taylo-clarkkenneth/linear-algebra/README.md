@@ -3,7 +3,7 @@
 ## Student Information
 
 **Name:** TAYLO, CLARK KENNETH C.
-**Section:** [YOUR SECTION HERE]
+**Section:** 9339-AY225
 **Course:** BSCSIT 1203 Programming 2
 **School:** University of Perpetual Help System DALTA – Molino Campus
 
